@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pemesanan Tiket Maskapai</title>
+  <style>
+    table td {
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body >
+  <div style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
+    <div style="margin-right: 100px;">
+      <p style="text-align: center;">Pemesanan Tiket Maskapai</p>
+      <table>
+        <tr>
+          <td>
+            <table>
+              <tr>
+                <td>Nama Pemesan</td>
+                <td>:</td>
+                <td><input type="text" id="nama" name="nama" required></td>
+              </tr>
+              <tr>
+                <td>Jumlah Tiket</td>
+                <td>:</td>
+                <td><input type="number" id="ticketQty" name="ticketQty" min="1" required></td>
+              </tr>
+              <tr>
+                <td>Kelas</td>
+                <td>:</td>
+                <td>
+                  <select name="kelas" id="kelas">
+                    <option id="kelas" value="Ekonomi">Ekonomi</option>
+                    <option id="kelas" value="Bisnis">Bisnis</option>
+                    <option id="kelas" value="Eksekutif">Eksekutif</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>Tujuan</td>
+                <td>:</td>
+                <td>
+                  <select name="tujuan" id="tujuan">
+                    <option id="tujuan" value="Jakarta">Jakarta</option>
+                    <option id="tujuan" value="Bali">Bali</option>
+                    <option id="tujuan" value="Medan">Medan</option>
+                    <option id="tujuan" value="Pontianak">Pontianak</option>
+                    <option id="tujuan" value="Papua">Papua</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>Bagasi</td>
+                <td>:</td>
+                <td>
+                  <input type="radio" id="bagasi" name="bagasi" value="5"><label for="5">5 Kg</label>
+                  <input type="radio" id="bagasi" name="bagasi" value="10"><label for="10">10 Kg</label>
+                  <input type="radio" id="bagasi" name="bagasi" value="15"><label for="15">15 Kg</label>
+                </td>
+              </tr>
+              
+              <tr>
+                <td style="display: flex; align-items: flex-start;" >Asuransi</td>
+                <td style="vertical-align: baseline;">:</td>
+                <td>
+                  <input type="checkbox" name="asuransi" id="asuransi" value="Asuransi Jiwa"><label for="Asuransi Jiwa">Asuransi Jiwa</label><BR>
+                  <input type="checkbox" name="asuransi" id="asuransi" value="Asuransi Kecelakaan"><label for="Asuransi Kecelakaan">Asuransi Kecelakaan</label><BR>
+                  <input type="checkbox" name="asuransi" id="asuransi" value="Asuransi Keterlambatan"><label for="Asuransi Keterlambatan">Asuransi Keterlambatan</label>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3">
+                    <input type="submit" name="submit" value="Simpan" id="submit" />
+                    <input type="reset" name="batal" value="Batal" id="batal" />
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div id="data-pembeli" style="display: none;">
+      <p style="text-align: center;">Data Pemesanan Tiket</p>
+      <table>
+        <tr>
+          <td>Nama Pemesan</td>
+          <td>:</td>
+          <td id="name"></td>
+        </tr>
+        <tr>
+          <td>Jumlah</td>
+          <td>:</td>
+          <td id="qty"></td>
+        </tr>
+        <tr>
+          <td>Kelas</td>
+          <td>:</td>
+          <td id="class"></td>
+        </tr>
+        <tr>
+          <td>Tujuan</td>
+          <td>:</td>
+          <td id="destination"></td>
+        </tr>
+        <tr>
+          <td>Bagasi</td>
+          <td>:</td>
+          <td id="storage"></td>
+        </tr>
+        <tr>
+          <td>Asuransi</td>
+          <td>:</td>
+          <td id="insurance"></td>
+        </tr>
+        <tr>
+          <td>Total Harga</td>
+          <td>:</td>
+          <td id="totalPrice"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <script>
+      let submit = document.getElementById("submit");
+  
+      submit.addEventListener('click', function(){     
+          let nama = document.getElementById("nama").value;
+          let ticketQty = document.getElementById("ticketQty").value;
+          let kelas = document.getElementById("kelas").value;
+          if(kelas == "Ekonomi"){
+              harga = 1000000;
+              kelas = `${kelas}`;
+          }else if(kelas == "Bisnis"){
+              harga = 2000000;
+              kelas = `${kelas}`;
+          }else if(kelas == "Eksekutif"){
+              harga = 3000000;
+              kelas = `${kelas}`;
+          }
+          hargaTiket = ticketQty * harga;
+          if(ticketQty > 3){
+              hargaTiket = hargaTiket - (30/100 * hargaTiket);
+          }
+
+          let tujuan = document.getElementById("tujuan").value;
+          let bagasi = document.querySelector("input[id='bagasi']:checked").value;
+          if(bagasi == 5){
+              hargaBagasi = 100000;
+          }else if(bagasi == 10){
+              hargaBagasi = 150000;
+          }else if(bagasi == 15){
+              hargaBagasi = 200000;
+          }
+          bagasi = `${bagasi}kg (${hargaBagasi})`;
+          let arr_asuransi = document.querySelectorAll("input[id='asuransi']:checked");
+          tempArray = [];
+          for(var i=0; i<arr_asuransi.length; i++){
+              tempArray.push(arr_asuransi[i].value);
+              asuransi = tempArray.join(", ");
+          }
+
+          hargaAsuransi = arr_asuransi.length * 50000;
+          asuransi = `${asuransi} (${hargaAsuransi})`;
+          console.log(arr_asuransi);
+
+          totalHarga = hargaTiket + hargaBagasi + hargaAsuransi;
+
+          document.getElementById("name").innerHTML = nama;
+          document.getElementById("qty").innerHTML = ticketQty;
+          document.getElementById("class").innerHTML = kelas;
+          document.getElementById("destination").innerHTML = tujuan;
+          document.getElementById("storage").innerHTML = bagasi;
+          document.getElementById("insurance").innerHTML = asuransi;
+          document.getElementById("totalPrice").innerHTML = totalHarga;
+          document.getElementById("data-pembeli").style.display = "block"
+      });
+  </script>
+</body>
+</html>
